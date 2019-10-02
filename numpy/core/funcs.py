@@ -29,6 +29,7 @@ def square(a):
     return Tensor(val_y, square, parents)
 
 def add(a, b):
+     
     parents = []
 
     val_a = a
@@ -37,7 +38,11 @@ def add(a, b):
     parents.append(val_b)
     if isinstance(val_a, Tensor):
         val_a = val_a.value
+    if isinstance(val_b, Tensor):
         val_b = val_b.value
+
+    if val_a.shape != val_b.shape:
+        raise ValueError('The shape of {} and {} dont match. ({} != {})'.format(val_a, val_b, val_a.shape, val_b.shape))
 
     val_y = np.add(val_a, val_b)
 

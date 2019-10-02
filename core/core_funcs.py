@@ -8,6 +8,7 @@ def grad(func):
         return grad_map[func]
     
     def inner(*args, **kwargs):
+        print('Args:',args)
         # Forward pass
         y = func(*args, **kwargs)
         if not isinstance(y, Tensor):
