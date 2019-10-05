@@ -8,34 +8,39 @@ def grad(func):
         return grad_map[func]
     
     def inner(*args, **kwargs):
-        print('Args:',args)
+        for arg in args:
+            if isinstance(arg, Tensor):
+                arg.ref = 0
+        # print('Args:',args)
         # Forward pass
         y = func(*args, **kwargs)
         if not isinstance(y, Tensor):
             raise ValueError('The function {} needs to return a Tensor object'.format(func))
-        if not _np.isscalar(y.value):
+        if y.value.size != 1:
             raise ValueError('Function {} needs to return a scalar value.'.format(func))
         
         #Backward pass
-        order = reverse_postorder(y)
-        print(order)
+        backpropagation(y)
+
+        return [arg.grad for arg in args]
 
     return inner
 
-def reverse_postorder(root):
+def backpropagation(root):
     """Return a post-order ordering of nodes in the graph."""
     visited = set()
-    order = []
+    root.grad = _np.array([1]) # dy/dy == 1
     def dfs_walk(node):
+        if node.parents is None: return
+        node.ref -= 1
+        if (node.ref > 0): return
+        node.pass_grads()
         visited.add(node)
+        print(node, node.grad)
         if isinstance(node, Tensor):
             for succ in node.parents:
                 if isinstance(succ, Tensor):
                     if not succ in visited:
                         dfs_walk(succ)
-                else:
-                    order.append(succ)
-        order.append(node)
     dfs_walk(root)
-    order.reverse()
-    return order
+    return
