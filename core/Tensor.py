@@ -24,10 +24,11 @@ class Tensor:
     def pass_grads(self):
         # Calculate VJP
         val_vjp = self.grad_func(*self.parents, self.grad)
+        # print(self.value,self.grad, self.grad_func, val_vjp)
         # Add grads to arguments
         for i in range(len(self.parents)):
-            if self.parents[i].grad == None: self.parents[i].grad = 0
-            self.parents[i].grad += val_vjp[i]
+            if self.parents[i].grad is None: self.parents[i].grad = val_vjp[i]
+            else: self.parents[i].grad += val_vjp[i]
 
     def __repr__(self):
         if self.parents == None:

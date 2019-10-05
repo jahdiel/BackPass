@@ -31,16 +31,15 @@ def backpropagation(root):
     visited = set()
     root.grad = _np.array([1]) # dy/dy == 1
     def dfs_walk(node):
-        if node.parents is None: return
+        if not isinstance(node, Tensor) or node.parents is None: return
         node.ref -= 1
         if (node.ref > 0): return
         node.pass_grads()
         visited.add(node)
-        print(node, node.grad)
-        if isinstance(node, Tensor):
-            for succ in node.parents:
-                if isinstance(succ, Tensor):
-                    if not succ in visited:
-                        dfs_walk(succ)
+        # print(node, node.grad)
+        for succ in node.parents:
+            if not succ in visited:
+                dfs_walk(succ)
+                
     dfs_walk(root)
     return

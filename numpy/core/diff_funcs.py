@@ -8,12 +8,12 @@ def init_diff_funcs():
     pass
 
 def diff_sum(a, grad):
-    return grad * _np.ones_like(a)
+    return np.array([grad * _np.ones_like(a.value)])
 
 add_gradient_pair(sum, diff_sum)
 
 def diff_square(a, grad):
-    return np.array(2 * grad * a.value)
+    return np.array([2 * grad * a.value])
 
 add_gradient_pair(square, diff_square)
 
