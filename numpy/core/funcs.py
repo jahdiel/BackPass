@@ -29,7 +29,7 @@ def primitive(func):
     def wrapper(*args):
         parents, val_parents = set_parents(*args)
         val_out = func(*val_parents)
-        return Tensor(val_out, func, parents, grad_map[func])
+        return Tensor(val_out, wrapper, parents, grad_map[wrapper])
 
     return wrapper
 
