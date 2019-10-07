@@ -4,7 +4,7 @@ from backpass.numpy.core.grad_map import grad_map
 
 def array(obj, *args, **kwargs):
     return Tensor(np.array(obj, *args, **kwargs))
-
+   
 def sum(a):
     parents, (val_a,) = set_parents(a)
 
@@ -25,15 +25,29 @@ def add(a, b):
 
     return Tensor(val_y, add, parents, grad_map[add])
 
+def primitive(func):
+    def wrapper(*args):
+        parents, val_parents = set_parents(*args)
+        val_out = func(*val_parents)
+        return Tensor(val_out, func, parents, grad_map[func])
+
+    return wrapper
+
+@primitive
 def multiply(a, b):
-    parents, val_parents = set_parents(a, b)
+    if a.shape != b.shape:
+        raise ValueError('The shape of {} and {} dont match. ({} != {})'.format(a, b, a.shape, b.shape))
+    return np.multiply(a, b)
+
+# def multiply(a, b):
+#     parents, val_parents = set_parents(a, b)
     
-    if val_parents[0].shape != val_parents[1].shape:
-        raise ValueError('The shape of {} and {} dont match. ({} != {})'.format(val_parents[0], val_parents[1], val_parents[0].shape, val_parents[1].shape))
+#     if val_parents[0].shape != val_parents[1].shape:
+#         raise ValueError('The shape of {} and {} dont match. ({} != {})'.format(val_parents[0], val_parents[1], val_parents[0].shape, val_parents[1].shape))
 
-    val_out = np.multiply(val_parents[0], val_parents[1])
+#     val_out = np.multiply(val_parents[0], val_parents[1])
 
-    return Tensor(val_out, multiply, parents, grad_map[multiply])
+#     return Tensor(val_out, multiply, parents, grad_map[multiply])
 
 def set_parents(*args):
     parents = list(args)
@@ -46,3 +60,4 @@ def set_parents(*args):
         val_parents.append(val)
 
     return parents, val_parents
+

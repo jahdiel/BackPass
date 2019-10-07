@@ -8,21 +8,22 @@ def grad(func):
         return grad_map[func]
     
     def inner(*args, **kwargs):
+        t_args = []
         for arg in args:
             if isinstance(arg, Tensor):
                 arg.ref = 0
-        # print('Args:',args)
+                t_args.append(arg)
+
         # Forward pass
         y = func(*args, **kwargs)
-        if not isinstance(y, Tensor):
-            raise ValueError('The function {} needs to return a Tensor object'.format(func))
-        if y.value.size != 1:
-            raise ValueError('Function {} needs to return a scalar value.'.format(func))
+        
+        # Validate the output of func
+        check_output(y, func)
         
         #Backward pass
         backpropagation(y)
 
-        return [arg.grad for arg in args]
+        return [arg.grad for arg in t_args]
 
     return inner
 
@@ -37,9 +38,15 @@ def backpropagation(root):
         node.pass_grads()
         visited.add(node)
         # print(node, node.grad)
-        for succ in node.parents:
-            if not succ in visited:
-                dfs_walk(succ)
+        for parent in node.parents:
+            if not parent in visited:
+                dfs_walk(parent)
                 
     dfs_walk(root)
     return
+
+def check_output(y, func):
+    if not isinstance(y, Tensor):
+            raise ValueError('The function {} needs to return a Tensor object'.format(func))
+    if y.value.size != 1:
+        raise ValueError('Function {} needs to return a scalar value.'.format(func))
