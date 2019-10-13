@@ -3,9 +3,9 @@ sys.path.append('../')
 from backpass.core import grad
 import backpass.numpy as np
 
-x = np.array([1, 3, 4, 5, 6])
+x = np.array([1, 3, 4, 5, 6], dtype=np.float32)
 
-b = np.array([2, 4, 5, 8, 9])
+b = np.array([2, 4, 5, 8, 9], dtype=np.float32)
 
 def s(x, b):
     a = np.square(x)
