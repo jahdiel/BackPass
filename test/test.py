@@ -9,8 +9,8 @@ b = np.array([2, 4, 5, 8, 9], dtype=np.float32)
 
 def s(x, b):
     a = np.square(x)
-    c = np.multiply(a, b)
-    z = np.add(a, c)
+    c = a * b
+    z = a + c
     return np.sum(z)
 
 y = s(x, b)

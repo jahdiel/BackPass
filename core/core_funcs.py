@@ -28,7 +28,7 @@ def grad(func):
     return inner
 
 def backpropagation(root):
-    """Return a post-order ordering of nodes in the graph."""
+    """Return a pre-order ordering of nodes in the graph."""
     visited = set()
     root.grad = _np.array([1]) # dy/dy == 1
     def dfs_walk(node):
