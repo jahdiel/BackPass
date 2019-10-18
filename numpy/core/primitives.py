@@ -16,3 +16,7 @@ def add(a, b):
 @primitive
 def multiply(a, b):
     return np.multiply(a, b)
+
+@primitive
+def subtract(a, b):
+    return np.subtract(a, b)

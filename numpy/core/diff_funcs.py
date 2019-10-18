@@ -26,3 +26,8 @@ def diff_multiply(a, b, grad):
     return np.array([b * grad, a * grad])
 
 add_gradient_pair(multiply, diff_multiply)
+
+def diff_subtract(a, b, grad):
+    return np.array([grad, -1 * grad])
+
+add_gradient_pair(subtract, diff_subtract)

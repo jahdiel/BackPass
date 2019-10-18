@@ -49,4 +49,10 @@ class Tensor:
         return primitives.multiply(self, other)
     
     def __rmul__(self, other):
-        return primitives.multiply(self, other)
+        return primitives.multiply(other, self)
+
+    def __sub__(self, other):
+        return primitives.subtract(self, other)
+
+    def __rsub__(self, other):
+        return primitives.subtract(other, self)
