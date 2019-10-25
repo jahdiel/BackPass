@@ -1,3 +1,4 @@
+from functools import wraps
 import numpy as np
 from backpass.core import Tensor
 from backpass.numpy.core.grad_map import grad_map
@@ -14,10 +15,10 @@ def arange(*args, **kwargs):
     return Tensor.Tensor(np.arange(*args, **kwargs))
 
 # Primitive functions
-
 def primitive(func):
     ''' Higher order function which wraps the simple numer functions by unboxing/boxing and creating Tensors.
         The wrapper function maintains track of the reference count and add nodes to the computational graph.'''
+    @wraps(func)
     def wrapper(*args):
         parents, val_parents = set_parents(*args)
         val_out = func(*val_parents)
@@ -25,7 +26,7 @@ def primitive(func):
 
     return wrapper
 
-
+# Set parents to the output Tensor
 def set_parents(*args):
     p = list(args)
     parents = p
@@ -38,4 +39,3 @@ def set_parents(*args):
         val_parents.append(val)
 
     return parents, val_parents
-

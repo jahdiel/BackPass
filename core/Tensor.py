@@ -15,9 +15,9 @@ class Tensor:
 
     def pass_grads(self):
         # Calculate VJP
-        parents = [p.value if isinstance(p, Tensor) else p for p in self.parents]
-        val_vjp = self.grad_func(*parents, self.grad)
-        # print(self.value,self.grad, self.grad_func, val_vjp)
+        parent_vals = [p.value if isinstance(p, Tensor) else p for p in self.parents]
+        val_vjp = self.grad_func(*parent_vals, grad=self.grad)
+        # print(self.value, self.grad, self.grad_func, val_vjp, "\n\n")
         # Add grads to arguments
         for i in range(len(self.parents)):
             if hasattr(self.parents[i], 'grad'):

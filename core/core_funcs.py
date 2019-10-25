@@ -17,7 +17,7 @@ def grad(func):
         # Forward pass
         y = func(*args, **kwargs)
         
-        # Validate the output of func
+        # Validate the output of func is scalar
         check_output(y, func)
         
         #Backward pass
