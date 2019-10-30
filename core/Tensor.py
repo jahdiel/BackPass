@@ -1,4 +1,3 @@
-from backpass.numpy.core import primitives
 
 class Tensor:
 
@@ -16,7 +15,7 @@ class Tensor:
     def pass_grads(self):
         # Calculate VJP
         parent_vals = [p.value if isinstance(p, Tensor) else p for p in self.parents]
-        val_vjp = self.grad_func(*parent_vals, grad=self.grad)
+        val_vjp = self.grad_func(*parent_vals, ans=self.value, grad=self.grad)
         # print(self.value, self.grad, self.grad_func, val_vjp, "\n\n")
         # Add grads to arguments
         for i in range(len(self.parents)):
@@ -43,16 +42,21 @@ class Tensor:
         return '<backpass.core.Tensor.Tensor {} ref: {}>'.format(self.value, self.ref)
 
     def __add__(self, other):
+        import backpass.numpy as primitives
         return primitives.add(self, other)
 
     def __mul__(self, other):
+        import backpass.numpy as primitives
         return primitives.multiply(self, other)
     
     def __rmul__(self, other):
+        import backpass.numpy as primitives
         return primitives.multiply(other, self)
 
     def __sub__(self, other):
+        import backpass.numpy as primitives
         return primitives.subtract(self, other)
 
     def __rsub__(self, other):
+        import backpass.numpy as primitives
         return primitives.subtract(other, self)

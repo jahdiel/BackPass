@@ -1,6 +1,6 @@
 import numpy as _np
-from . import Tensor
-from backpass.numpy import grad_map
+from .tensor import Tensor
+from .grad_map import grad_map
 
 
 def grad(func):

@@ -1,5 +1,5 @@
 import numpy as np
-from .wrap_primitives import primitive
+from backpass.core.wrap_primitives import primitive
 
 @primitive
 def sum(a):

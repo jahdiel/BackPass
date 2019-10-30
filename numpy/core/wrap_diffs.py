@@ -5,7 +5,7 @@ def debroadcasting(diff_func):
     ''' Ensure that the grad for each argument has same shape as argument.
         This means taking care of broadcasted arguments used to evaluate primitives.'''
     @wraps(diff_func)
-    def reversed_func(*args, grad=None):
+    def reversed_func(*args, ans=None, grad=None):
         proper_grads = []
         grads = diff_func(*args, grad=grad)
         for arg, grad in zip(args, grads):

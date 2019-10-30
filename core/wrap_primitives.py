@@ -1,18 +1,6 @@
 from functools import wraps
-import numpy as np
-from backpass.core import Tensor
-from backpass.numpy.core.grad_map import grad_map
-
-# Numpy Types and Structure Wrapping
-
-int32 = np.int32
-float32 = np.float32
-
-def array(obj, *args, **kwargs):
-    return Tensor.Tensor(np.array(obj, *args, **kwargs))
-
-def arange(*args, **kwargs):
-    return Tensor.Tensor(np.arange(*args, **kwargs))
+from .tensor import Tensor
+from backpass.core.grad_map import grad_map
 
 # Primitive functions
 def primitive(func):
@@ -22,7 +10,7 @@ def primitive(func):
     def wrapper(*args):
         parents, val_parents = set_parents(*args)
         val_out = func(*val_parents)
-        return Tensor.Tensor(val_out, wrapper, parents, grad_map[wrapper])
+        return Tensor(val_out, wrapper, parents, grad_map[wrapper])
 
     return wrapper
 
@@ -33,7 +21,7 @@ def set_parents(*args):
     val_parents = []
     for i in range(len(p)):
         val = p[i]
-        if isinstance(p[i], Tensor.Tensor):
+        if isinstance(p[i], Tensor):
             p[i].ref += 1
             val = p[i].value
         val_parents.append(val)
