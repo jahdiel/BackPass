@@ -12,7 +12,6 @@ Example usage of the library:
 
 
 ```python
-import sys
 from backpass.core import grad
 import backpass.numpy as np
 
