@@ -2,7 +2,7 @@
     <img src="https://github.com/jahdiel/backpass/blob/master/Backpass.png" width=300 height=250>
 </p>
 
-# Backpass - Automatic differentiation with CUDA/Numba support
+# Backpass - Automatic differentiation with CUDA/Numba
 
 An automatic differentiation library in Python with CUDA/Numba support. It is based on Tensor objects which construct a computational graph used to obtained the gradient of a function using reverse-mode autodifferentiation (backpropagation). The purpose of the library is for beginners to better understand the underlying principles of the backpropagation algorithm, the backbone of the deep learning revolution.
 
