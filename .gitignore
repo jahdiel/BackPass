@@ -2,3 +2,4 @@ __pycache__/
 autograd_env/
 .vscode
 test/.ipynb_checkpoints/
+*.pyc
