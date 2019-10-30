@@ -1,3 +1,7 @@
+<p align=center>
+    <img src="https://github.com/jahdiel/backpass/blob/master/Backpass.png" width=300 height=250>
+</p>
+
 # Backpass - Automatic differentiation with CUDA/Numba support
 
 An automatic differentiation library in Python with CUDA/Numba support. It is based on Tensor objects wich hold their 
