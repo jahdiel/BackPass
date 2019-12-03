@@ -8,6 +8,11 @@ def init_diff_funcs():
     '''Method just to initialize the diff_functions module'''
     pass
 
+def diff_negative(a, ans=None, grad=None):
+    return -grad,
+
+add_gradient_pair(negative, diff_negative)
+
 def diff_sum(a, ans=None, grad=None):
     return grad * _np.ones_like(a),
 
@@ -25,16 +30,28 @@ def diff_add(a, b, ans=None, grad=None):
 add_gradient_pair(add, diff_add)
 
 @debroadcasting
+def diff_subtract(a, b, ans=None, grad=None):
+    return grad, -1 * grad
+
+add_gradient_pair(subtract, diff_subtract)
+
+@debroadcasting
 def diff_multiply(a, b, ans=None, grad=None):
     return b * grad, a * grad
 
 add_gradient_pair(multiply, diff_multiply)
 
 @debroadcasting
-def diff_subtract(a, b, ans=None, grad=None):
-    return grad, -1 * grad
+def diff_divide(a, b, ans=None, grad=None):
+    return grad / b, -grad * a / b**2
 
-add_gradient_pair(subtract, diff_subtract)
+add_gradient_pair(divide, diff_divide)
+
+@debroadcasting
+def diff_true_divide(a, b, ans=None, grad=None):
+    return grad / b, -grad * a / b**2
+
+add_gradient_pair(true_divide, diff_true_divide)
 
 def diff_log(a, ans=None, grad=None):
     return grad / a,

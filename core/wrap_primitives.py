@@ -7,10 +7,11 @@ def primitive(func):
     ''' Higher order function which wraps the simple numer functions by unboxing/boxing and creating Tensors.
         The wrapper function maintains track of the reference count and add nodes to the computational graph.'''
     @wraps(func)
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         parents, val_parents = set_parents(*args)
-        val_out = func(*val_parents)
-        return Tensor(val_out, wrapper, parents, grad_map[wrapper])
+        val_out = func(*val_parents, **kwargs)
+        grad_func = grad_map[wrapper] if wrapper in grad_map else None
+        return Tensor(val_out, wrapper, parents, grad_func, kwargs)
 
     return wrapper
 

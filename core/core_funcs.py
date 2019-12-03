@@ -32,15 +32,20 @@ def backpropagation(root):
     visited = set()
     root.grad = _np.array([1]) # dy/dy == 1
     def dfs_walk(node):
-        if not isinstance(node, Tensor) or node.parents is None: return
-        node.ref -= 1
-        if (node.ref > 0): return
-        node.pass_grads()
-        visited.add(node)
-        # print(node, node.grad)
-        for parent in node.parents:
-            if not parent in visited:
-                dfs_walk(parent)
+        try:
+            if not isinstance(node, Tensor) or node.parents is None: return
+            node.ref -= 1
+            if (node.ref > 0): return
+            node.pass_grads()
+            visited.add(node)
+            # print(node, node.grad)
+            for parent in node.tensor_parents():
+                if not parent in visited:
+                    dfs_walk(parent)
+
+        except AttributeError as attr_err:
+            print("Error occured in node:", node.func)
+            raise Exception('Attribute Error in a layer.') from attr_err
                 
     dfs_walk(root)
     return

@@ -1,7 +1,7 @@
 '''
 The MIT License (MIT)
 
-Copyright (c) 2014 by the President and Fellows of Harvard University and Jahdiel Alvarez
+Copyright (c) 2014 by the President, Fellows of Harvard University and Jahdiel Alvarez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -62,3 +62,25 @@ def dot_adjoint_1(a, b, ans=None, grad=None):
             grad, a, [range(-A_ndim - B_ndim + 2, -B_ndim + 1), range(A_ndim - 1)]))
     return _np.asarray(out, dtype=B_dtype)
 
+def diff_reshape(a, newshape, order=None, ans=None, grad=None):
+    return reshape(grad, _np.shape(a), order=order)
+
+add_gradient_pair(reshape, diff_reshape)
+
+def repeat_to_match_shape(g, shape, dtype, axis, keepdims):
+    """Returns the array g repeated along axis to fit vector space vs.
+       Also returns the number of repetitions of the array."""
+    if shape == ():
+      return g, 1
+    axis = list(axis) if isinstance(axis, tuple) else axis
+    new_shape = _np.array(shape)
+    new_shape[axis] = 1
+    num_reps = _np.prod(_np.array(shape)[axis])
+    return reshape(g, new_shape) + _np.zeros(shape, dtype=dtype), num_reps
+
+def diff_mean(a, ans=None, grad=None, axis=None, keepdims=False):
+    shape, dtype = _np.shape(a), _np.result_type(a)
+    g_repeated, num_reps = repeat_to_match_shape(grad, shape, dtype, axis, keepdims)
+    return g_repeated / num_reps,
+
+add_gradient_pair(mean, diff_mean)

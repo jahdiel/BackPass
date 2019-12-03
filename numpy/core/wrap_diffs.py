@@ -18,7 +18,7 @@ def debroadcast(arg, grad, debroadcast_axis=0):
     arg_dim = _np.ndim(arg)
     while _np.ndim(grad) > arg_dim:
         grad = _np.sum(grad, axis=debroadcast_axis)
-    for axis, size in enumerate(arg.shape):
+    for axis, size in enumerate(_np.shape(arg)):
         if size == 1:
             grad = _np.sum(grad, axis=axis, keepdims=True)
     return grad
