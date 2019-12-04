@@ -24,7 +24,7 @@ SOFTWARE.
 
 import numpy as _np
 from .wrap_diffs import debroadcasting
-from .primitives import *
+import backpass.numpy.core.primitives as np
 from backpass.core.grad_map import add_gradient_pair 
 
 def init_diff_funcs():
@@ -35,7 +35,7 @@ def diff_dot(a, b, ans=None, grad=None):
     return dot_adjoint_0(a, b, ans, grad), \
             dot_adjoint_1(a, b, ans, grad)
 
-add_gradient_pair(dot, diff_dot)
+add_gradient_pair(np.dot, diff_dot)
 
 def dot_adjoint_0(a, b, ans=None, grad=None):
     '''Great help taken from Autograd library'''
@@ -63,9 +63,9 @@ def dot_adjoint_1(a, b, ans=None, grad=None):
     return _np.asarray(out, dtype=B_dtype)
 
 def diff_reshape(a, newshape, order=None, ans=None, grad=None):
-    return reshape(grad, _np.shape(a), order=order)
+    return np.reshape(grad, _np.shape(a), order=order)
 
-add_gradient_pair(reshape, diff_reshape)
+add_gradient_pair(np.reshape, diff_reshape)
 
 def repeat_to_match_shape(g, shape, dtype, axis, keepdims):
     """Returns the array g repeated along axis to fit vector space vs.
@@ -76,11 +76,32 @@ def repeat_to_match_shape(g, shape, dtype, axis, keepdims):
     new_shape = _np.array(shape)
     new_shape[axis] = 1
     num_reps = _np.prod(_np.array(shape)[axis])
-    return reshape(g, new_shape) + _np.zeros(shape, dtype=dtype), num_reps
+    return np.reshape(g, new_shape) + _np.zeros(shape, dtype=dtype), num_reps
 
 def diff_mean(a, ans=None, grad=None, axis=None, keepdims=False):
     shape, dtype = _np.shape(a), _np.result_type(a)
     g_repeated, num_reps = repeat_to_match_shape(grad, shape, dtype, axis, keepdims)
-    return g_repeated / num_reps,
+    return g_repeated.value / num_reps,
 
-add_gradient_pair(mean, diff_mean)
+add_gradient_pair(np.mean, diff_mean)
+
+def grad_chooser(a, ans=None, grad=None, axis=None, keepdims=False):
+    """Builds gradient of functions that choose a single item, such as min or max."""
+    shape, dtype = _np.shape(a), _np.result_type(a)
+    g_repeated, _ = repeat_to_match_shape(grad, shape, dtype, axis, keepdims)
+    argmax_locations = a == repeat_to_match_shape(ans, shape, dtype, axis, keepdims)[0].value
+    return g_repeated.value * argmax_locations / _np.sum(argmax_locations, axis=axis, keepdims=True),
+    
+add_gradient_pair(np.max, grad_chooser)
+add_gradient_pair(np.min, grad_chooser)
+add_gradient_pair(np.amax, grad_chooser)
+add_gradient_pair(np.amin, grad_chooser)
+
+def balanced_eq(x, z, y):
+    return (x == z) / (1.0 + (x == y))
+
+@debroadcasting
+def diff_maximum(a, b, ans=None, grad=None):
+    return grad * balanced_eq(a, ans, b), grad * balanced_eq(b, ans, a)
+
+add_gradient_pair(np.maximum, diff_maximum)

@@ -38,7 +38,7 @@ def backpropagation(root):
             if (node.ref > 0): return
             node.pass_grads()
             visited.add(node)
-            # print(node, node.grad)
+            # print(node, node.parents, "\n")
             for parent in node.tensor_parents():
                 if not parent in visited:
                     dfs_walk(parent)

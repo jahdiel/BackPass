@@ -50,10 +50,6 @@ def dot(a, b):
     return _np.dot(a, b)
 
 @primitive
-def argmax(a, axis=None, out=None):
-    return _np.argmax(a, axis, out)
-
-@primitive
 def mean(a, axis=None, dtype=None, out=None, keepdims=False):
     return _np.mean(a, axis, dtype, out, keepdims)
 
@@ -61,4 +57,30 @@ def mean(a, axis=None, dtype=None, out=None, keepdims=False):
 def reshape(a, newshape, order='C'):
     return _np.reshape(a, newshape, order)
 
+@primitive
+def argmax(a, axis=None, out=None):
+    return _np.argmax(a, axis, out)
 
+@primitive
+def maximum(a, b, out=None, where=True, casting='same_kind', order='K', dtype=None, subok=True):
+    return _np.maximum(a, b, out=out, where=where, casting=casting, order=order, dtype=dtype, subok=subok)
+
+@primitive
+def max(a, axis=None, out=None, keepdims=False, initial=_np._NoValue, where=True): 
+    return _np.max(a, axis, out, keepdims, initial, where)
+
+@primitive
+def amax(a, axis=None, out=None, keepdims=_np._NoValue, initial=_np._NoValue, where=_np._NoValue): 
+    return _np.amax(a, axis, out, keepdims, initial, where)
+
+@primitive
+def min(a, axis=None, out=None, keepdims=False, initial=_np._NoValue, where=True): 
+    return _np.min(a, axis, out, keepdims, initial, where)
+
+@primitive
+def amin(a, axis=None, out=None, keepdims=_np._NoValue, initial=_np._NoValue, where=_np._NoValue): 
+    return _np.amin(a, axis, out, keepdims, initial, where)
+
+@primitive
+def equal(a, b):
+    return _np.equal(a, b)

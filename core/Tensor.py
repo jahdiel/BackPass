@@ -17,7 +17,8 @@ class Tensor:
         # Calculate VJP
         parent_vals = [p.value if isinstance(p, Tensor) else p for p in self.parents]
         val_vjp = self.grad_func(*parent_vals, ans=self.value, grad=self.grad, **self.kwargs)
-        # print(self.value, self.grad, self.grad_func, val_vjp, "\n\n")
+        # print(self.value, self.grad, self.grad_func, self.ref, val_vjp, "\n\n")
+        # print(self.value, self.grad, self.grad_func, self.ref, "\n\n")
         # Add grads to arguments
         for i in range(len(self.parents)):
             if hasattr(self.parents[i], 'grad'):
@@ -48,6 +49,10 @@ class Tensor:
     def __neg__(self):
         import backpass.numpy as primitives
         return primitives.negative(self)
+
+    def __eq__(self, other):
+        import backpass.numpy as primitives
+        return primitives.equal(self, other)
 
     def __add__(self, other):
         import backpass.numpy as primitives
@@ -88,3 +93,5 @@ class Tensor:
     def __rtruediv__(self, other):
         import backpass.numpy as primitives
         return primitives.true_divide(other, self)
+
+    def __hash__(self): return id(self)
