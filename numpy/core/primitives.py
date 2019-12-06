@@ -6,8 +6,8 @@ def negative(a):
     return _np.negative(a)
 
 @primitive
-def sum(a):
-    return _np.sum(a)
+def sum(a, axis=None, dtype=None, out=None, keepdims=_np._NoValue, initial=_np._NoValue, where=_np._NoValue):
+    return _np.sum(a, axis, dtype, out, keepdims, initial, where)
 
 @primitive
 def square(a):
@@ -84,3 +84,7 @@ def amin(a, axis=None, out=None, keepdims=_np._NoValue, initial=_np._NoValue, wh
 @primitive
 def equal(a, b):
     return _np.equal(a, b)
+
+@primitive
+def tanh(x, out=None, where=True, casting='same_kind', order='K', dtype=None, subok=True):
+    return _np.tanh(x, out=out, where=where, casting=casting, order=order, dtype=dtype, subok=subok)

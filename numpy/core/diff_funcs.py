@@ -13,11 +13,6 @@ def diff_negative(a, ans=None, grad=None):
 
 add_gradient_pair(negative, diff_negative)
 
-def diff_sum(a, ans=None, grad=None):
-    return grad * _np.ones_like(a),
-
-add_gradient_pair(sum, diff_sum)
-
 def diff_square(a, ans=None, grad=None):
     return 2 * grad * a,
 
@@ -67,3 +62,10 @@ def diff_log10(a, ans=None, grad=None):
     return grad / a / _np.log(10),
 
 add_gradient_pair(log10, diff_log10)
+
+def diff_tanh(a, ans=None, grad=None):
+    # print("max a:", _np.max(a))
+    # print("res:", _np.cosh(_np.max(a)) **2)
+    return grad / _np.cosh(a) **2,
+
+add_gradient_pair(tanh, diff_tanh)

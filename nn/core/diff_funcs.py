@@ -7,6 +7,7 @@ def init_diff_funcs():
     pass
 
 def diff_relu(a, ans=None, grad=None):
+    print("ans:", ans)
     return grad * (ans > 0).astype(_np.float32),
 
 add_gradient_pair(relu, diff_relu)

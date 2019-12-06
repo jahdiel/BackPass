@@ -31,6 +31,13 @@ def init_diff_funcs():
     '''Method just to initialize the diff_functions module'''
     pass
 
+def diff_sum(a, ans=None, grad=None, axis=None, keepdims=False, dtype=None):
+    shape, dtype = _np.shape(a), _np.result_type(a)
+    return repeat_to_match_shape(grad, shape, dtype, axis, keepdims)[0].value,
+
+add_gradient_pair(np.sum, diff_sum)
+
+
 def diff_dot(a, b, ans=None, grad=None):
     return dot_adjoint_0(a, b, ans, grad), \
             dot_adjoint_1(a, b, ans, grad)
@@ -60,6 +67,7 @@ def dot_adjoint_1(a, b, ans=None, grad=None):
     else:
         out = swap(_np.tensordot(
             grad, a, [range(-A_ndim - B_ndim + 2, -B_ndim + 1), range(A_ndim - 1)]))
+    
     return _np.asarray(out, dtype=B_dtype)
 
 def diff_reshape(a, newshape, order=None, ans=None, grad=None):

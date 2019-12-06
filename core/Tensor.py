@@ -18,7 +18,6 @@ class Tensor:
         parent_vals = [p.value if isinstance(p, Tensor) else p for p in self.parents]
         val_vjp = self.grad_func(*parent_vals, ans=self.value, grad=self.grad, **self.kwargs)
         # print(self.value, self.grad, self.grad_func, self.ref, val_vjp, "\n\n")
-        # print(self.value, self.grad, self.grad_func, self.ref, "\n\n")
         # Add grads to arguments
         for i in range(len(self.parents)):
             if hasattr(self.parents[i], 'grad'):

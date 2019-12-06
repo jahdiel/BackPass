@@ -1,1 +1,1 @@
-from .sgd import sgd
+from .sgd import sgd, sgd_momentum
