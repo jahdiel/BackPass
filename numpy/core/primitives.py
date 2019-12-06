@@ -7,7 +7,7 @@ def negative(a):
 
 @primitive
 def sum(a, axis=None, dtype=None, out=None, keepdims=_np._NoValue, initial=_np._NoValue, where=_np._NoValue):
-    return _np.sum(a, axis, dtype, out, keepdims, initial, where)
+    return _np.sum(a, axis=axis, dtype=dtype, out=out, keepdims=keepdims, initial=initial, where=where)
 
 @primitive
 def square(a):
