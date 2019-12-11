@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import time
 print(torch.cuda.current_device())
 
 #Measuring times
@@ -29,9 +30,15 @@ print('---- Test  ----')
 for n in range(25):
 
     x = 100*np.random.random(size=np.power(2,n))
-    b = 100*np.random.random(size=np.power(2,n)) 
-
+    b = 100*np.random.random(size=np.power(2,n))
+    start = time.clock()
     x_cuda = torch.tensor(x,requires_grad =True).cuda()
     b_cuda = torch.tensor(b,requires_grad=True).cuda()
 
     s(x_cuda,b_cuda)
+    
+    torch.cuda.synchronize()
+    end = time.clock()
+    time_taken = end - start
+    print(time_taken)
+
