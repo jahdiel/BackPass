@@ -6,9 +6,9 @@
 
 An automatic differentiation library in Python with CUDA support. It is based on Tensor objects which construct a computational graph used to obtained the gradient of a function using reverse-mode autodifferentiation (backpropagation). The purpose of the library is for beginners to better understand the underlying principles of the backpropagation algorithm, the backbone of the deep learning revolution.
 
-Backpass is wrapps numpy and scipy functions, although not all functions are implemented. Native python, numpy and/or scipy code can be differentiated using the library, there is no need of specialized sub-languages to construct the graphs. We use a dynamic approach to the creation of the computational graphs. 
+Backpass wraps numpy and scipy functions, although not all functions are implemented. Native python, numpy and/or scipy code can be differentiated using the library, there is no need of specialized sub-languages to construct the graphs. We use a dynamic approach for the creation of the computational graphs. 
 
-The advantage of backpass is that it supports CUDA making it much faster than other autodiff packages in python and that it is very lightweight in contrast to other established deep learning frameworks. 
+The advantages of backpass are that it supports CUDA, something other autodiff packages in python don't do and it is very lightweight, meaning it can be run on virtually any device. 
 
 Example usage of the library:
 
