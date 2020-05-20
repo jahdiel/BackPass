@@ -23,7 +23,6 @@ def diff_logsumexp(a, ans=None, grad=None, axis=None, b=1.0, keepdims=False):
     shape, dtype = _np.shape(a), _np.result_type(a)
     g_repeated,   _ = repeat_to_match_shape(grad, shape, dtype, axis, keepdims)
     ans_repeated, _ = repeat_to_match_shape(ans, shape, dtype, axis, keepdims)
-    # print("a:", a)
     # print("ans:", ans)
     # print("g_repeated:", g_repeated)
     # print("ans_repeated:", ans_repeated)

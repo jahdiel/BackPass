@@ -26,7 +26,7 @@ add_gradient_pair(add, diff_add)
 
 @debroadcasting
 def diff_subtract(a, b, ans=None, grad=None):
-    return grad, -1 * grad
+    return grad, -grad
 
 add_gradient_pair(subtract, diff_subtract)
 
