@@ -2,7 +2,6 @@
 class Tensor:
 
     def __init__(self, value, func=None, parents=None, grad_func=None, kwargs=None, want_grad=False):
-
         self.value = value
         self.func = func
         self.grad_func = grad_func
@@ -42,55 +41,7 @@ class Tensor:
 
     def __repr__(self):
         if self.parents == None:
-            return '<backpass.core.Tensor.Tensor {} -leaf ref: {}>'.format(self.value, self.ref)
-        return '<backpass.core.Tensor.Tensor {} ref: {}>'.format(self.value, self.ref)
-
-    def __neg__(self):
-        import backpass.numpy as primitives
-        return primitives.negative(self)
-
-    def __eq__(self, other):
-        import backpass.numpy as primitives
-        return primitives.equal(self, other)
-
-    def __add__(self, other):
-        import backpass.numpy as primitives
-        return primitives.add(self, other)
-
-    def __radd__(self, other):
-        import backpass.numpy as primitives
-        return primitives.add(other, self)
-
-    def __mul__(self, other):
-        import backpass.numpy as primitives
-        return primitives.multiply(self, other)
-    
-    def __rmul__(self, other):
-        import backpass.numpy as primitives
-        return primitives.multiply(other, self)
-
-    def __sub__(self, other):
-        import backpass.numpy as primitives
-        return primitives.subtract(self, other)
-
-    def __rsub__(self, other):
-        import backpass.numpy as primitives
-        return primitives.subtract(other, self)
-
-    def __div__(self, other):
-        import backpass.numpy as primitives
-        return primitives.divide(self, other)
-    
-    def __rdiv__(self, other):
-        import backpass.numpy as primitives
-        return primitives.divide(other, self)
-
-    def __truediv__(self, other):
-        import backpass.numpy as primitives
-        return primitives.true_divide(self, other)
-    
-    def __rtruediv__(self, other):
-        import backpass.numpy as primitives
-        return primitives.true_divide(other, self)
+            return '<backpass.core.tensor.Tensor {} -leaf ref: {}>'.format(self.value, self.ref)
+        return '<backpass.core.tensor.Tensor {} ref: {}>'.format(self.value, self.ref)
 
     def __hash__(self): return id(self)
